@@ -2,6 +2,8 @@ describe('Todo', function () {
   let TODO_ITEM_ONE = 'buy some cheese'
   let TODO_ITEM_TWO = 'feed the cat'
   let TODO_ITEM_THREE = 'book a doctors appointment'
+  let TODO_ITEM_FOUR = 'editing completed'
+  let TODO_ITEM_FIVE = 'editing uncompleted'
   let TODO_WHITESPACE = '     buy flowers     '
   let TODO_TRIM = 'buy flowers'
 
@@ -37,6 +39,7 @@ describe('Todo', function () {
       cy.get('.new-todo')
         .type(TODO_ITEM_ONE)
         .type('{enter}')
+
       cy.get('ul.todo-list')
         .children('li')
         // .contains(TODO_ITEM_ONE)
@@ -78,6 +81,7 @@ describe('Todo', function () {
       cy.get('.new-todo')
           .type(TODO_WHITESPACE)
           .type('{enter}')
+
       cy.get('ul.todo-list')
           .children('li')
           .should(($div) => {
@@ -191,6 +195,30 @@ describe('Todo', function () {
 
     it('should allow me to edit an item', function () {
       // TODO: add a test ensure that you can edit an item
+      // Mark index 0 as complete and test editing both complete and uncompleted items
+      cy.get('.toggle')
+          .eq(0)
+          .click()
+
+      cy.get('ul.todo-list')
+          .children('li')
+          .eq(0)
+          .dblclick()
+          .should('have.class', 'completed editing')
+          .type('{selectall}{backspace}')
+          .type(TODO_ITEM_FOUR)
+          .type('{enter}')
+          .children('input').should('have.value', TODO_ITEM_FOUR)
+
+      cy.get('ul.todo-list')
+          .children('li')
+          .eq(1)
+          .dblclick()
+          .should('not.have.class', 'completed editing')
+          .type('{selectall}{backspace}')
+          .type(TODO_ITEM_FIVE)
+          .type('{enter}')
+          .children('input').should('have.value', TODO_ITEM_FIVE)
     })
   })
 
@@ -431,6 +459,17 @@ describe('Todo', function () {
 
     it('should allow me to display completed items', function () {
       // TODO: add a test to verify the completed items display
+      cy.get('@todos')
+          .eq(1)
+          .find('.toggle')
+          .check()
+
+      cy.get('.filters')
+          .contains('Completed')
+          .click()
+
+      cy.get('@todos').should('have.length', 1)
+      cy.get('li').should('have.class', 'completed')
     })
 
     it('should allow me to display all items', function () {
