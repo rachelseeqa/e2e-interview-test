@@ -154,9 +154,20 @@ describe('Todo', function () {
   })
 
   context('Item', function () {
+    // Creates TODO before each test in "Item"
+    beforeEach(function () {
+      cy.createDefaultTodos().as('todos')
+    })
 
     it('should allow me to mark items as complete', function () {
       // TODO: add a test to mark an item as completed
+      // cy.each could potentially be used
+      // 1 < 1 clicks each checkbox once
+      for(let i = 0; i < 1; i ++){
+        cy.get('.toggle')
+            .click({ multiple: true })
+        cy.get('li').should('have.class', 'completed')
+      };
     })
 
     it('should allow me to un-mark items as complete', function () {
