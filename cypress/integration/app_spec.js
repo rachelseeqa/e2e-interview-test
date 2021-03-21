@@ -2,6 +2,8 @@ describe('Todo', function () {
   let TODO_ITEM_ONE = 'buy some cheese'
   let TODO_ITEM_TWO = 'feed the cat'
   let TODO_ITEM_THREE = 'book a doctors appointment'
+  let TODO_WHITESPACE = '     buy flowers     '
+  let TODO_TRIM = 'buy flowers'
 
   beforeEach(function () {
     cy.visit('/')
@@ -32,6 +34,13 @@ describe('Todo', function () {
   context('New Todo', function () {
     it('should allow me to add todo items', function () {
       // TODO: create a test for adding a todo
+      cy.get('.new-todo')
+        .type(TODO_ITEM_ONE)
+        .type('{enter}')
+      cy.get('ul.todo-list')
+        .children('li')
+        // .contains(TODO_ITEM_ONE)
+        .should('contain', TODO_ITEM_ONE)
     })
 
     it('should clear text input field when an item is added', function () {
@@ -66,6 +75,14 @@ describe('Todo', function () {
     it('should trim text input', function () {
       // TODO: add a test for ensuring that whitespace is trimmed from the todo
       // input such that "  todo   " ends up being added as "todo".
+      cy.get('.new-todo')
+          .type(TODO_WHITESPACE)
+          .type('{enter}')
+      cy.get('ul.todo-list')
+          .children('li')
+          .should(($div) => {
+            expect($div.text().trim()).equal(TODO_TRIM);
+          });
     })
 
     it('should show #main and #footer when items added', function () {
