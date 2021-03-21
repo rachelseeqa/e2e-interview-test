@@ -86,7 +86,7 @@ describe('Todo', function () {
           .children('li')
           .should(($div) => {
             expect($div.text().trim()).equal(TODO_TRIM);
-          });
+          })
     })
 
     it('should show #main and #footer when items added', function () {
