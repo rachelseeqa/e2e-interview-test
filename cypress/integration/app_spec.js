@@ -166,7 +166,7 @@ describe('Todo', function () {
     it('should allow me to mark items as complete', function () {
       // TODO: add a test to mark an item as completed
       // cy.each could potentially be used
-      // 1 < 1 clicks each checkbox once
+      // i < 1 clicks each checkbox once
       for(let i = 0; i < 1; i ++){
         cy.get('.toggle')
             .click({ multiple: true })
